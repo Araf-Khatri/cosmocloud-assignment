@@ -2,6 +2,8 @@ import { FC, useEffect, useRef, useState } from "react";
 import { Employee } from "../../types/employee";
 import { listEmployees } from "../../requests/employees";
 
+import './index.css'
+
 const Employees: FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const employeesAPIRef = useRef<AbortController | null>(null);
@@ -24,24 +26,26 @@ const Employees: FC = () => {
   };
 
   useEffect(() => {
-    fetchEmployees()
+    // fetchEmployees();
     return () => {
       employeesAPIRef?.current?.abort();
     };
   }, []);
 
   return (
-    <div className="employees">
-      <div className="card">
-        <div className="flex gap-4">
-          <div className="badge">
-            <p>ID</p>
+    <div className="wrapper">
+      <div className="employees">
+        <div className="card">
+          <div className="info">
+            <div className="badge">
+              <p>ID</p>
+            </div>
+            <p>NAME</p>
           </div>
-          <p>NAME</p>
-        </div>
-        <div className="card buttons">
-          <button>Edit</button>
-          <button>Delete</button>
+          <div className="card-cta">
+            <button>Edit</button>
+            <button>Delete</button>
+          </div>
         </div>
       </div>
     </div>

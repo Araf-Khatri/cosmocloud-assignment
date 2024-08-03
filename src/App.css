@@ -37,6 +37,12 @@ button {
   justify-content: center;
 }
 
+.wrapper {
+  max-width: 127rem;
+  width: 86.67%;
+  margin: 0 auto;
+}
+
 .navbar .nav-link {
   font-weight: 600;
   font-size: 2rem;
