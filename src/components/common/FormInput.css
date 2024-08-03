@@ -1,0 +1,11 @@
+.form-input {
+  display: flex;
+  gap: 2.4rem;
+  align-items: center;
+}
+
+.form-input .input-label {
+  font-weight: bold;
+  width: 100%;
+  max-width: 15rem;
+}

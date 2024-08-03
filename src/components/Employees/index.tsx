@@ -1,10 +1,12 @@
 import { FC, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Employee } from "../../types/employee";
-import { listEmployees } from "../../requests/employees";
+import { deleteEmployee, listEmployees } from "../../requests/employees";
 
-import './index.css'
+import "./index.css";
 
 const Employees: FC = () => {
+  const navigate = useNavigate();
   const [employees, setEmployees] = useState<Employee[]>([]);
   const employeesAPIRef = useRef<AbortController | null>(null);
 
@@ -32,21 +34,46 @@ const Employees: FC = () => {
     };
   }, []);
 
+  const editEmployeeHandler = (id: number) => {
+    navigate(`/edit/${id}`);
+  };
+
+  const deleteEmployeeHandler = async (id: number) => {
+    try {
+      await deleteEmployee({ id });
+      await fetchEmployees();
+    } catch (err) {
+      console.error("Something went wrong!");
+    }
+  };
+
   return (
     <div className="wrapper">
       <div className="employees">
-        <div className="card">
-          <div className="info">
-            <div className="badge">
-              <p>ID</p>
+        {employees.map(({ id, name }) => (
+          <div className="card">
+            <div className="card-content">
+              <div className="card-info">
+                <div className="card-id-badge">{`ID: ${id}`}</div>
+                <span className="card-name">{name}</span>
+              </div>
+              <div className="card-cta">
+                <button
+                  onClick={() => editEmployeeHandler(id!)}
+                  className="cta-button edit-button"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => deleteEmployeeHandler(id!)}
+                  className="cta-button delete-button"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-            <p>NAME</p>
           </div>
-          <div className="card-cta">
-            <button>Edit</button>
-            <button>Delete</button>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

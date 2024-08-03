@@ -1,0 +1,58 @@
+
+.card {
+  border-radius: 0.8rem;
+  border: 1px solid #dedede;
+  padding: 1.6rem;
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-id-badge {
+  display: flex;
+  width: fit-content;
+  font-weight: bold;
+  font-size: 1.4rem;
+  padding: 0.5rem 1rem;
+  background-color: #f7f7f7;
+  border-radius: 0.8rem;
+}
+
+.card-info {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+}
+
+.card-name {
+  font-weight: bold;
+}
+
+.card-cta {
+  display: flex;
+  gap: 1.6rem;
+}
+
+.cta-button {
+  border-radius: 0.5rem;
+  border: none;
+  padding: 1.5rem 2rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.edit-button {
+  background-color: #e3edf5;
+  color: #1c4261;
+}
+.delete-button {
+  background-color: #ffe3e3;
+  color: #e85a5c;
+}
+
+.cta-button:hover {
+  background-color: #5555ff;
+}

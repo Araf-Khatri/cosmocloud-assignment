@@ -1,0 +1,22 @@
+.create-employee {
+  display: flex;
+  justify-content: space-around;
+}
+
+.employee-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.employee-address {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.employee-address .heading {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--moss-green-800);
+}

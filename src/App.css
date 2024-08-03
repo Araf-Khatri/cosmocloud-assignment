@@ -15,7 +15,7 @@ html {
 
 body {
   font-size: 1.6rem;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: Inter, Helvetica, "sans-serif";
   color: var(--davy-gray-900);
 }
 
@@ -26,8 +26,23 @@ a:hover {
   text-decoration: none;
 }
 
+input {
+  outline: none;
+  border: 1px solid #dedede;
+  padding: ;
+  font-size: 1.5rem;
+  padding: 1rem 1.2rem;
+  border-radius: 0.5rem;
+  color: #5e6278;
+  font-weight: bold;
+}
+
+input:focus {
+  border: 1px solid #cfcfcf;
+}
+
 button {
-  padding: 1rem 2rem; 
+  padding: 1rem 2rem;
   border: none;
   outline: none;
 }

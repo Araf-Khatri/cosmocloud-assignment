@@ -1,6 +1,8 @@
 import { FC, ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 
+import "./AppWrapper.css"
+
 type AppWrapperProps = {
   children: ReactNode;
 };
@@ -20,7 +22,6 @@ const navLinks = [
 
 const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
   const location = useLocation();
-  console.log(location);
   return (
     <div>
       <div className="navbar-container">
