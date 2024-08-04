@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from "axios";
-import { Employee, GetEmployeeParams } from "../types/employee";
+import {
+  Employee,
+  EmployeesListResponse,
+  GetEmployeeParams,
+} from "../types/employee";
 import { urls } from "../constants/urls";
 import { defaultHeaders } from "./../constants/requestsHeaders";
 
@@ -7,11 +11,30 @@ import { defaultHeaders } from "./../constants/requestsHeaders";
 export const listEmployees: (
   params: GetEmployeeParams,
   signal: AbortSignal
-) => Promise<AxiosResponse<Employee[]>> = async (params, signal) => {
-  console.log(defaultHeaders)
+) => Promise<AxiosResponse<EmployeesListResponse>> = async (params, signal) => {
   try {
-    const response = await axios.get<Employee[]>(urls.employees, {
+    const response = await axios.get<EmployeesListResponse>(urls.employees, {
       params,
+      signal,
+      headers: {
+        ...defaultHeaders,
+      },
+    });
+    return response;
+  } catch (err) {
+    throw new Error("Something went wrong! Cannot fetch Employees");
+  }
+};
+
+export const getEmployee: (
+  id: string,
+  signal: AbortSignal
+) => Promise<AxiosResponse<Employee>> = async (
+  id: string,
+  signal: AbortSignal
+) => {
+  try {
+    const response = await axios.get<Employee>(`${urls.employees}/${id}`, {
       signal,
       headers: {
         ...defaultHeaders,
@@ -27,26 +50,20 @@ export const createEmployee: (
   payload: Employee
 ) => Promise<AxiosResponse<Employee>> = async (payload: Employee) => {
   try {
-    const response = await axios.post<Employee>(
-      urls.employees,
-      {
-        payload,
+    const response = await axios.post<Employee>(urls.employees, payload, {
+      headers: {
+        ...defaultHeaders,
       },
-      {
-        headers: {
-          ...defaultHeaders,
-        },
-      }
-    );
+    });
     return response;
   } catch (err) {
     throw new Error("Something went wrong! Unable to create employee.");
   }
 };
 
-export const deleteEmployee = async ({ id }: { id: number }) => {
+export const deleteEmployee = async ({ _id }: { _id: string }) => {
   try {
-    const deleteEmployeeAPI = `${urls.employees}/${id}`;
+    const deleteEmployeeAPI = `${urls.employees}/${_id}`;
     const response = await axios.delete(deleteEmployeeAPI, {
       headers: {
         ...defaultHeaders,
@@ -61,7 +78,7 @@ export const deleteEmployee = async ({ id }: { id: number }) => {
 
 export const updateEmployee = async (data: Employee) => {
   try {
-    const updateEmployeeAPI = `${urls.employees}/${data.id}`;
+    const updateEmployeeAPI = `${urls.employees}/${data._id}`;
     const response = await axios.put(updateEmployeeAPI, data, {
       headers: {
         ...defaultHeaders,

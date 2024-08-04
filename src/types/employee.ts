@@ -1,6 +1,6 @@
 export type DefaultParams = {
-  limit: number;
-  offset: number;
+  limit?: number;
+  offset?: number;
 };
 
 type Address = {
@@ -11,13 +11,16 @@ type Address = {
 };
 
 export type Employee = {
-  id: number | null;
+  _id?: string | null;
   name: string | null;
   email: string | null;
   phone: string | null;
   address: Address;
 };
 
-export type GetEmployeeParams = {
-  id?: string;
-} & DefaultParams;
+export type GetEmployeeParams = {} & DefaultParams;
+
+export type EmployeesListResponse = {
+  data: Employee[];
+  page: { total: number };
+};

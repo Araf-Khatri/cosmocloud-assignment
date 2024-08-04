@@ -1,3 +1,14 @@
+.wrapper-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.employees {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
 .card {
   border-radius: 0.8rem;
@@ -53,6 +64,16 @@
   color: #e85a5c;
 }
 
-.cta-button:hover {
-  background-color: #5555ff;
+.pagination {
+  display: flex;
+  gap: 1rem;
+}
+
+.pagination button {
+  font-weight: bold;
+}
+
+.pagination button.active {
+  background-color: #4e6137;
+  color: #ffffff;
 }

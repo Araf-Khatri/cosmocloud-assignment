@@ -12,7 +12,7 @@ function App() {
       else we can use: `/employees`*/}
         <Route path="/" element={<Employees />} />
         <Route path="/create" element={<CreateEditEmployee type="CREATE" />} />
-        <Route path="/edit/:id" element={<CreateEditEmployee type="EDIT" />} />
+        <Route path="/view-profile/:id" element={<CreateEditEmployee type="VIEW" />} />
       </Routes>
     </AppWrapper>
   );

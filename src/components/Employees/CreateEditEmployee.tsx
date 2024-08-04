@@ -1,18 +1,21 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { Employee } from "../../types/employee";
-import { useParams } from "react-router-dom";
-import { listEmployees } from "../../requests/employees";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import {
+  createEmployee,
+  getEmployee,
+  listEmployees,
+} from "../../requests/employees";
 import FormInput from "../common/FormInput";
 
 import "./createEditEmployee.css";
-import { phoneRegex } from "../../constants";
+import { emailRegex, phoneRegex } from "../../constants";
 
 type CreateEditEmployeeProps = {
-  type: "EDIT" | "CREATE";
+  type: "VIEW" | "CREATE";
 };
 
 const initialData: Employee = {
-  id: null,
   name: null,
   email: null,
   phone: null,
@@ -24,13 +27,19 @@ const initialData: Employee = {
   },
 };
 const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
+  const navigate = useNavigate();
   const params = useParams();
   const [employee, setEmployee] = useState<Employee>(initialData);
   const employeeAPIRef = useRef<AbortController | null>(null);
+  const enableCreateCTA =
+    ((employee.email && emailRegex.test(employee.email)) ||
+      (employee.phone && phoneRegex.test(employee.phone))) &&
+    employee.name;
 
   useEffect(() => {
-    if (type === "EDIT") fetchEmployee();
-  }, []);
+    if (type === "VIEW") fetchEmployee();
+    else setEmployee({...initialData})
+  }, [type]);
 
   const fetchEmployee = async () => {
     if (employeeAPIRef.current) employeeAPIRef.current.abort();
@@ -40,15 +49,11 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
       const controller = new AbortController();
       employeeAPIRef.current = controller;
 
-      const response = await listEmployees(
-        { id, limit: 1, offset: 0 },
-        controller.signal
-      );
+      const response = await getEmployee(id, controller.signal);
       const employee = response.data;
-      if (employee.length == 0)
-        throw new Error("Employee not found! Invalid ID!");
+      if (!employee) throw new Error("Employee not found! Invalid ID!");
 
-      setEmployee(employee[0]);
+      setEmployee(employee);
       // show success toast
     } catch (error) {
       if (error instanceof Error) {
@@ -75,6 +80,17 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
       }
     };
 
+  const createEmployeeHandler = async () => {
+    try {
+      await createEmployee(employee);
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const isViewProfileFlow = type === "VIEW";
+
   return (
     <div className="wrapper">
       <div className="create-employee">
@@ -86,15 +102,20 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
             onChangeHandler={onChangeHandler(null)}
             value={employee.name}
             placeholder="Enter Name"
+            disable={isViewProfileFlow}
           />
           <FormInput<keyof Employee>
             inputType="text"
             label="Phone:"
             name="phone"
-            onChangeHandler={onChangeHandler(null)}
+            onChangeHandler={(e) => {
+              const value = e.target.value;
+              if (Number.isNaN(+value) || value.length > 10) return;
+              onChangeHandler(null)(e);
+            }}
             value={employee.phone}
             placeholder="Enter Phone"
-            // accept={phoneRegex}
+            disable={isViewProfileFlow}
           />
           <FormInput<keyof Employee>
             inputType="email"
@@ -103,6 +124,7 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
             onChangeHandler={onChangeHandler(null)}
             value={employee.email}
             placeholder="Enter Email"
+            disable={isViewProfileFlow}
           />
         </div>
         <div className="employee-address">
@@ -113,8 +135,9 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
               label="Address Line 1:"
               name="address_line_1"
               onChangeHandler={onChangeHandler("address")}
-              value={employee.email}
+              value={employee.address.address_line_1}
               placeholder="Enter Address Line 1"
+              disable={isViewProfileFlow}
             />
             <FormInput<keyof Employee["address"]>
               inputType="text"
@@ -123,6 +146,7 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
               onChangeHandler={onChangeHandler("address")}
               value={employee.address.city}
               placeholder="Enter City Name"
+              disable={isViewProfileFlow}
             />
             <FormInput<keyof Employee["address"]>
               inputType="text"
@@ -131,6 +155,7 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
               onChangeHandler={onChangeHandler("address")}
               value={employee.address.country}
               placeholder="Enter Country Name"
+              disable={isViewProfileFlow}
             />
             <FormInput<keyof Employee["address"]>
               inputType="text"
@@ -139,10 +164,20 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
               onChangeHandler={onChangeHandler("address")}
               value={employee.address.zip_code}
               placeholder="Enter Zip Code"
+              disable={isViewProfileFlow}
             />
           </div>
         </div>
       </div>
+      {type === "CREATE" && (
+        <button
+          onClick={createEmployeeHandler}
+          disabled={!enableCreateCTA}
+          className=""
+        >
+          Create Employee
+        </button>
+      )}
     </div>
   );
 };

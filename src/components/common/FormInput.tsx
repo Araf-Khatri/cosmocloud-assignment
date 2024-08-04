@@ -9,6 +9,7 @@ type FormInputProps<T> = {
   name: T;
   value: string | null;
   onChangeHandler: (e: ChangeEvent<HTMLInputElement>) => void;
+  disable?: boolean
 };
 
 const FormInput = <T extends string>({
@@ -18,6 +19,7 @@ const FormInput = <T extends string>({
   name,
   value,
   onChangeHandler,
+  disable
 }: FormInputProps<T>) => {
   return (
     <div className="form-input">
@@ -31,6 +33,7 @@ const FormInput = <T extends string>({
         type={inputType}
         value={value ?? ""}
         placeholder={placeholder}
+        disabled={disable}
       />
     </div>
   );

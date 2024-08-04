@@ -75,10 +75,7 @@ button {
 }
 
 @media screen and (max-width: 43.74em) {
-  body {
-    font-size: 1.4rem;
-  }
-  .navbar .nav-link {
-    font-size: 1.6rem;
+  html {
+    font-size: 61%;
   }
 }
