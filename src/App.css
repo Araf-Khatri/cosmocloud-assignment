@@ -47,6 +47,10 @@ button {
   outline: none;
 }
 
+button:disabled {
+  opacity: 80%;
+}
+
 .navbar {
   display: flex;
   justify-content: center;

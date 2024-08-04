@@ -27,7 +27,7 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
       <div className="navbar-container">
         <nav className="navbar">
           {navLinks.map(({ name, path, replace }) => (
-            <Link
+            <Link key={path}
               className={`nav-link ${
                 path === location.pathname ? "active" : ""
               }`}

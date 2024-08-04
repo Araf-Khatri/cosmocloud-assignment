@@ -1,10 +1,9 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { Employee } from "../../types/employee";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   createEmployee,
   getEmployee,
-  listEmployees,
 } from "../../requests/employees";
 import FormInput from "../common/FormInput";
 
@@ -38,7 +37,7 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
 
   useEffect(() => {
     if (type === "VIEW") fetchEmployee();
-    else setEmployee({...initialData})
+    else setEmployee({ ...initialData });
   }, [type]);
 
   const fetchEmployee = async () => {
@@ -73,7 +72,8 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
       } else {
         setEmployee((prevState) => ({
           ...prevState,
-          [parentKey]: {
+          address: {
+            ...prevState.address,
             [e.target.name]: e.target.value,
           },
         }));
@@ -161,7 +161,11 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
               inputType="text"
               label="Zip Code:"
               name="zip_code"
-              onChangeHandler={onChangeHandler("address")}
+              onChangeHandler={(e) => {
+                const value = e.target.value;
+                if (Number.isNaN(+value)) return;
+                onChangeHandler("address")(e);
+              }}
               value={employee.address.zip_code}
               placeholder="Enter Zip Code"
               disable={isViewProfileFlow}
@@ -173,7 +177,7 @@ const CreateEditEmployee: FC<CreateEditEmployeeProps> = ({ type }) => {
         <button
           onClick={createEmployeeHandler}
           disabled={!enableCreateCTA}
-          className=""
+          className="create-employee-btn"
         >
           Create Employee
         </button>

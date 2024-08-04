@@ -61,8 +61,9 @@ const Employees: FC = () => {
 
   return (
     <>
+      <div id="overlay"></div>
       <dialog open={deletePopup.show}>
-        <p>Delete Record</p>
+        <h2>Delete Record</h2>
         <p>ID: {deletePopup._id}</p>
         <p>Name: {deletePopup.name}</p>
         <form method="dialog">
@@ -80,7 +81,7 @@ const Employees: FC = () => {
         <div className="wrapper-flex">
           <div className="employees">
             {employees.map(({ _id, name }) => (
-              <div className="card">
+              <div key={_id} className="card">
                 <div className="card-content">
                   <div className="card-info">
                     <div className="card-id-badge">{`ID: ${
@@ -112,7 +113,7 @@ const Employees: FC = () => {
             {new Array(Math.ceil(page.totalRecords / LIMIT))
               .fill("")
               .map((_, idx) => (
-                <button
+                <button key={idx}
                   className={idx === page.currentPage ? `active` : ""}
                   onClick={() => {
                     fetchEmployees(idx);

@@ -20,3 +20,10 @@
   font-weight: bold;
   color: var(--moss-green-800);
 }
+
+.create-employee-btn {
+  background-color: var(--moss-green-800);
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 0.5rem;
+}

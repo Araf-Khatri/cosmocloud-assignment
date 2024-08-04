@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent } from "react";
 
 import "./FormInput.css";
 
